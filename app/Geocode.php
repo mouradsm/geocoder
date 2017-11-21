@@ -12,9 +12,13 @@ class Geocode {
         echo "Using " . $provider . " provider \n";
 
         $httpClient = new \Http\Adapter\Guzzle6\Client();
+        $provider = new \Geocoder\Provider\GoogleMaps\GoogleMaps($httpClient);
+        $geocoder = new \Geocoder\StatefulGeocoder($provider, 'pt-br');
 
-        
-        dd();
+        $result = $geocoder->geocodeQuery(GeocodeQuery::create('Rua Parazinho, Rio de Janeiro, RJ'));
+
+
+        dd($result);
 
     }
 }
