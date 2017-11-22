@@ -12,14 +12,14 @@ class FindGeocode extends Command
      *
      * @var string
      */
-    protected $signature = 'geocode:find {provider}';
+    protected $signature = 'geocode:process {provider}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Find geocoding information based on address information ';
+    protected $description = 'Process geocoding information based on address information ';
 
     /**
      * Create a new command instance.
@@ -40,6 +40,6 @@ class FindGeocode extends Command
      */
     public function handle()
     {
-        $this->geocode->find($this->argument('provider'));
+        $this->geocode->process($this->argument('provider'));
     }
 }

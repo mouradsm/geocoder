@@ -7,6 +7,9 @@
     "require": {
         "php": ">=7.0.0",
         "fideloper/proxy": "~3.3",
+        "geocoder-php/locationiq-provider": "^1.0",
+        "geocoder-php/open-cage-provider": "^4.0",
+        "geocoder-php/pickpoint-provider": "^4.0",
         "laravel/framework": "5.5.*",
         "laravel/tinker": "~1.0",
         "php-http/curl-client": "^1.7",

@@ -9,6 +9,7 @@
 use Geocoder\Provider\Chain\Chain;
 use Geocoder\Provider\GeoPlugin\GeoPlugin;
 use Geocoder\Provider\GoogleMaps\GoogleMaps;
+use Geocoder\Provider\LocationIQ\LocationIQ;
 use Http\Client\Curl\Client;
 
 return [
@@ -16,15 +17,19 @@ return [
     'providers' => [
         Chain::class => [
             GoogleMaps::class => [
-                'en-US',
+                'pt-br',
                 env('GOOGLE_MAPS_API_KEY'),
             ],
             GeoPlugin::class  => [],
         ],
         GoogleMaps::class => [
             'pt-br',
-            env('GOOGLE_MAPS_API_KEY')
-        ]
+            env('GOOGLE_MAPS_API_KEY'),
+        ],
+        LocationIQ::class => [
+            'pt-br',
+            env('LOCATIONIQ_API_KEY'),
+        ],
     ],
     'adapter'  => Client::class,
 ];
