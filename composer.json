@@ -12,6 +12,7 @@
         "geocoder-php/pickpoint-provider": "^4.0",
         "laravel/framework": "5.5.*",
         "laravel/tinker": "~1.0",
+        "orangehill/iseed": "^2.5",
         "php-http/curl-client": "^1.7",
         "php-http/guzzle6-adapter": "^1.1",
         "toin0u/geocoder-laravel": "^4.0"
