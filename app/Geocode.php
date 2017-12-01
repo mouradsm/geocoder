@@ -2,17 +2,14 @@
 
 namespace App;
 
-use Geocoder\Laravel\Facades\Geocoder;
-use Geocoder\Query\GeocodeQuery;
-use \Geocoder\Provider\GoogleMaps\GoogleMaps;
-use \Geocoder\Provider\LocationIQ\LocationIQ;
-use \Geocoder\Provider\PickPoint\PickPoint;
-use \Geocoder\Provider\OpenCage\OpenCage;
-use \Geocoder\ProviderAggregator;
-use \Geocoder\Collection;
-use \Http\Adapter\Guzzle6\Client;
 use App\Address as Address;
-
+use Geocoder\Provider\GoogleMaps\GoogleMaps;
+use Geocoder\Provider\LocationIQ\LocationIQ;
+use Geocoder\Provider\OpenCage\OpenCage;
+use Geocoder\Provider\PickPoint\PickPoint;
+use Geocoder\ProviderAggregator;
+use Geocoder\Query\GeocodeQuery;
+use Http\Adapter\Guzzle6\Client;
 use Illuminate\Support\Facades\Log;
 
 class Geocode {
@@ -29,7 +26,13 @@ class Geocode {
             $this->rateLimit = 10000;
 
         $enderecos = Address::whereNotNull('cep')->whereNull('lat')
-                                   ->whereNull('long')->orderBy('id', 'asc')->limit($this->rateLimit)->get();
+                                   ->whereNull('lng')->orderBy('id', 'asc')->limit($this->rateLimit)->get();
+
+        if(empty($enderecos[0])) {
+            echo "Nothing to process. Stoping... \n";
+            return;
+        }
+
 
         foreach ($enderecos as $value) {
             array_push($this->basicInformation, ['id' => $value->id, 'rua' => preg_split("/[-(]/",
@@ -46,7 +49,7 @@ class Geocode {
 
             $geocode = $geocode->get(0)->getCoordinates();
 
-            Address::where('id', '=', $i['id'])->update(['lat' => $geocode->getLongitude(), 'long' => $geocode->getLongitude()]);
+            Address::where('id', '=', $i['id'])->update(['lat' => $geocode->getLongitude(), 'lng' => $geocode->getLongitude()]);
 
             sleep(1);
         }
@@ -57,7 +60,7 @@ class Geocode {
         echo "Using " . $provider . " provider \n";
 
         $this->geocoder->registerProviders([
-            new GoogleMaps($this->adapter),
+            new GoogleMaps($this->adapter, env('GOOGLE_MAPS_API_KEY')),
             new LocationIQ($this->adapter, env('LOCATIONIQ_API_KEY')),
             new PickPoint($this->adapter, env('PICKPOINT_API_KEY')),
             new OpenCage($this->adapter,env('OPENCAGE_API_KEY'))
