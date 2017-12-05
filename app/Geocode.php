@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Log;
 
 class Geocode {
     function __construct() {
-        $this->rateLimit = 2500;
+        $this->rateLimit = 10;
         $this->adapter = new Client();
         $this->geocoder = new ProviderAggregator();
         $this->basicInformation = [];
@@ -25,8 +25,8 @@ class Geocode {
         if ($provider == 'locationiq')
             $this->rateLimit = 10000;
 
-        $enderecos = Address::whereNotNull('cep')->whereNull('lat')
-                                   ->whereNull('lng')->orderBy('id', 'asc')->limit($this->rateLimit)->get();
+        $enderecos = Address::whereNotNull('cep')->where('lat', '=', '')
+                                   ->where('lng', '=', '')->orderBy('id', 'asc')->limit($this->rateLimit)->get();
 
         if(empty($enderecos[0])) {
             echo "Nothing to process. Stoping... \n";
@@ -49,7 +49,7 @@ class Geocode {
 
             $geocode = $geocode->get(0)->getCoordinates();
 
-            Address::where('id', '=', $i['id'])->update(['lat' => $geocode->getLongitude(), 'lng' => $geocode->getLongitude()]);
+            Address::where('id', '=', $i['id'])->update(['lat' => $geocode->getLatitude(), 'lng' => $geocode->getLongitude()]);
 
             sleep(1);
         }
