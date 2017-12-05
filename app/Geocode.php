@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Log;
 
 class Geocode {
     function __construct() {
-        $this->rateLimit = 10;
+        $this->rateLimit = 100;
         $this->adapter = new Client();
         $this->geocoder = new ProviderAggregator();
         $this->basicInformation = [];
@@ -39,6 +39,8 @@ class Geocode {
                                                          $value->rua)[0], 'cep' => $value->cep]);
         }
 
+        echo "### Using " . $provider . " provider ### ";
+
         foreach ($this->basicInformation as $i) {
             $fullAddress = $i['rua'] . ', ' . $i['cep'] . ', RJ';
 
@@ -57,7 +59,7 @@ class Geocode {
     }
 
     private function find($provider, $fullAdress) {
-        echo "Using " . $provider . " provider \n";
+        echo '.';
 
         $this->geocoder->registerProviders([
             new GoogleMaps($this->adapter, env('GOOGLE_MAPS_API_KEY')),
