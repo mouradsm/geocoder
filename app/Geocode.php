@@ -80,14 +80,14 @@ class Geocode {
     }
 
     private function find($provider, $fullAdress) {
-        echo '.';
-
         $result =  $this->geocoder
                     ->using($provider)
                     ->geocodeQuery(GeocodeQuery::create($fullAdress));
 
         if($result->count() == 0)
             Log::error('Error on: ' . $fullAdress);
+
+        echo $result->count() == 0 ? '0' : "1";
 
         return $result;
     }
