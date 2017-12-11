@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Log;
 
 class Geocode {
     function __construct() {
-        $this->rateLimit = 100;
+        $this->rateLimit = 2500;
         $this->adapter = new Client();
         $this->geocoder = new ProviderAggregator();
         $this->basicInformation = [];
@@ -65,7 +65,7 @@ class Geocode {
                     echo $i['id'] . " não atualizado";
 
             } catch (QueryException $e) {
-                echo $e->getMessage();
+                echo "Erro ao executar a query";
                 Log::error($e->getMessage());
             } catch (InvalidServerResponse $e ) {
                 echo "Resposta inválida ao procurar: " . $fullAddress;
