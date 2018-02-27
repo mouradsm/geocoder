@@ -61,7 +61,7 @@ class Geocode {
 
                 $geocode = $geocode->get(0)->getCoordinates();
 
-                if (Address::where('id', '=', $i['id'])->update(['lat' => $geocode->getLongitude(), 'lng' => $geocode->getLongitude()]) == 0)
+                if (Address::where('id', '=', $i['id'])->update(['lat' => $geocode->getLatitude(), 'lng' => $geocode->getLongitude()]) == 0)
                     echo $i['id'] . " não atualizado";
 
             } catch (QueryException $e) {
